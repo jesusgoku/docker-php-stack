@@ -1,13 +1,20 @@
 #!/usr/bin/env bash
-ln -s /usr/bin/nodejs /usr/bin/node
-cd /var/www/terminal
-npm install
-pm2 start /var/www/terminal/index.js -i 0 --name "terminal"
-cd "$OLDPWD"
+
+TTY_PASS=`pwgen -s 12 1` && sed -i.bak "s/PASSWORD/${TTY_PASS}/" /terminal/index.js
+# pm2 start /terminal/index.js -i 0 --name "terminal"
+
+echo "========================================================================"
+echo "You can now connect to this TTY using:"
+echo ""
+echo "=> Enter in your browser: https://host:8080"
+echo "=> Username: admin / Password: ${TTY_PASS}"
+echo ""
+echo "========================================================================"
+
 
 if [ ! -z "$GIT_REPO" ]; then
-    rm -rf html
-    git clone --depth 1 "$GIT_REPO" html
+    rm -rf app
+    git clone --depth 1 "$GIT_REPO" app
 fi
 
-apache2-foreground
+/run.sh

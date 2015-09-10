@@ -1,28 +1,30 @@
-FROM php:5.6-apache
+FROM tutum/lamp:latest
 MAINTAINER Jesús Urrutia <jesus.urrutia@gmail.com>
 # Install Git
-RUN apt-get update && apt-get install -y git
-RUN apt-get update && apt-get install -y nodejs npm
-# Install PHP extensions
-RUN apt-get update && apt-get install -y \
-    libfreetype6-dev \
-    libjpeg62-turbo-dev \
-    libmcrypt-dev \
-    libpng12-dev \
-    libicu-dev \
-    && docker-php-ext-install iconv mcrypt gd intl
-# Install bower
-RUN npm -g install bower
+RUN apt-get update && apt-get install -y curl
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php && \
     mv composer.phar /usr/local/bin/composer
+# Install Node and Npm
+RUN apt-get update && apt-get install -y nodejs npm
+RUN npm -g install bower
 RUN npm -g install pm2
 # For Web application
 EXPOSE 80
+EXPOSE 3306
 # For terminal
 EXPOSE 8080
-COPY terminal /var/www/terminal
-COPY config/php.ini /usr/local/etc/php/
-COPY entrypoint.sh /var/www/
-WORKDIR /var/www/
-CMD ["bash", "/var/www/entrypoint.sh"]
+COPY tty/package.json /terminal/
+COPY tty/server.key /terminal/
+COPY tty/server.crt /terminal/
+# COPY terminal/index.html /terminal/
+RUN ln -s /usr/bin/nodejs /usr/bin/node
+COPY tty/index.js /terminal/
+RUN cd /terminal && npm install
+ADD start-terminal.sh /start-terminal.sh
+RUN chmod 755 /start-terminal.sh
+ADD supervisord-terminal.conf /etc/supervisor/conf.d/supervisord-terminal.conf
+# COPY config/php.ini /usr/local/etc/php/
+COPY entrypoint.sh /
+WORKDIR /
+CMD ["bash", "/entrypoint.sh"]
