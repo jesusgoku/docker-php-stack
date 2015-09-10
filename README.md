@@ -1,6 +1,14 @@
 Docker PHP Stack
 ================
 
+This image contain:
+
+- PHP5.6
+- composer
+- NodeJS
+- NPM
+- Bower
+
 For build image execute:
 
 ```sh
