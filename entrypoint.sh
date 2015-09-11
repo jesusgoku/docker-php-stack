@@ -23,7 +23,7 @@ if [ ! -z "$GIT_REPO" ]; then
     fi
 
     if [ -f "composer.json" ]; then
-        composer install --prefer-dist --no-dev --optimize-autoloader --no-interaction
+        composer install --prefer-source --no-dev --optimize-autoloader --no-interaction
     fi
 fi
 
