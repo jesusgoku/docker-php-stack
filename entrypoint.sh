@@ -12,17 +12,18 @@ if [ ! -z "$GIT_REPO" ]; then
 
     cd app
 
-    if [ -f "composer.json" ]; then
-        composer install --prefer-dist --no-dev --optimize-autoloader --no-interaction
-    fi
-
     if [ -f "bower.json" ]; then
         bower install --production
     fi
 
     if [ ! -z "${SYMFONY_APP}" ] || [ ! -z "${SILEX_APP}" ]; then
         echo "=> Is a SYMFONY or SILEX app. Change web root to web folder."
+        export SYMFONY_ENV=prod
         sed -i.bak 's/www\/html/www\/html\/web/' /etc/apache2/sites-available/000-default.conf
+    fi
+
+    if [ -f "composer.json" ]; then
+        composer install --prefer-dist --no-dev --optimize-autoloader --no-interaction
     fi
 fi
 
