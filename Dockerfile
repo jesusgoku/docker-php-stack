@@ -39,6 +39,10 @@ RUN cd /terminal && npm install
 COPY start-terminal.sh /start-terminal.sh
 COPY supervisord-terminal.conf /etc/supervisor/conf.d/supervisord-terminal.conf
 RUN chmod 755 /start-terminal.sh
+# Apache configuration
+COPY config/apache_default.conf /etc/apache2/sites-available/000-default.conf
+COPY config/apache_symfony.conf /etc/apache2/conf-available/apache_symfony.conf
+COPY config/apache_silex.conf /etc/apache2/conf-available/apache_silex.conf
 # Copy container initialization script
 COPY entrypoint.sh /
 WORKDIR /

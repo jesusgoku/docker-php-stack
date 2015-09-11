@@ -22,6 +22,14 @@ if [ ! -z "$GIT_REPO" ]; then
         sed -i.bak 's/www\/html/www\/html\/web/' /etc/apache2/sites-available/000-default.conf
     fi
 
+    if [ ! -z "${SYMFONY_APP}" ]; then
+        sed -i.bak 's@# \(Include conf-available/apache_symfony.conf\)@\1@g' /etc/apache2/sites-available/000-default.conf
+    fi
+
+    if [ ! -z "${SILEX_APP}" ]; then
+        sed -i.bak 's@# \(Include conf-available/apache_silex.conf\)@\1@g' /etc/apache2/sites-available/000-default.conf
+    fi
+
     if [ -f "composer.json" ]; then
         composer install --prefer-source --no-dev --optimize-autoloader --no-interaction
     fi
