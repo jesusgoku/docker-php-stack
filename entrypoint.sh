@@ -13,7 +13,7 @@ if [ ! -z "$GIT_REPO" ]; then
     cd app
 
     if [ -f "composer.json" ]; then
-        composer install --prefer-dist --no-dev --optimize-autoloader
+        composer install --prefer-dist --no-dev --optimize-autoloader --no-interaction
     fi
 
     if [ -f "bower.json" ]; then
