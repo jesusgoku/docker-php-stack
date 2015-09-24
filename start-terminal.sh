@@ -1,3 +1,2 @@
 #!/bin/bash
-cd /terminal
-exec node .
+exec node /terminal/index.js

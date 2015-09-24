@@ -5,10 +5,6 @@ var app = tty.createServer({
   users: {
     admin: 'PASSWORD'
   },
-  https: {
-    key: "./server.key",
-    cert: "./server.crt"
-  },
   port: 8080
 });
 
